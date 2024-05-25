@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Courses</title>
+</head>
+<body>
+    <h1>Select Your Preferred Courses</h1>
+    <form id="course-selection-form">
+        <input type="checkbox" name="courses" value="Introduction to HTML"> Course 1<br>
+        <input type="checkbox" name="courses" value="CSS Fundamentals"> Course 2<br>
+        <input type="checkbox" name="courses" value="JavaScript Basics"> Course 3<br>
+        <button type="button" onclick="submitSelection()">Submit</button>
+    </form>
+    
+    <script>
+        function submitSelection() {
+            const form = document.getElementById('course-selection-form');
+            const formData = new FormData(form);
+            const courses = formData.getAll('courses');
+
+            fetch('/api/saveCourses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ courses }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Courses saved successfully!');
+                } else {
+                    alert('Failed to save courses.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

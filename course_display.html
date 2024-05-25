@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Courses</title>
+</head>
+<body>
+    <h1>Your Selected Courses</h1>
+    <ul id="course-list"></ul>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/api/getCourses')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const courseList = document.getElementById('course-list');
+                        data.courses.forEach(course => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = course;
+                            courseList.appendChild(listItem);
+                        });
+                    } else {
+                        alert('Failed to load courses.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+</html>
